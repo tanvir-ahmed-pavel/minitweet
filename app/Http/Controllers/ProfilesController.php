@@ -60,18 +60,28 @@ class ProfilesController extends Controller
         $data = $this->validate($request, [
             "title" => "",
             "description" => "",
-            "profile_img" => "required|image",
+            "profile_img" => "image",
             "url" => "",
         ]);
 
-        $img_path = $request->file("profile_img")->store("profile_imgs", "public");
+        $img_path = $request->file("img");
 
         if (Auth::user()->id == $user->profile->user_id){
-            Auth::user()->profile()->update([
-                "title" => $data["title"],
-                "description" => $data["description"],
-                "profile_img" => $img_path,
-            ]);
+            if (!is_null($img_path)) {
+                $img_path = $request->file("img")->store("profile_imgs", 'public');
+                Auth::user()->profile()->update([
+                    "title" => $data["title"],
+                    "url" => $data["url"],
+                    "description" => $data["description"],
+                    "profile_img" => $img_path,
+                ]);
+            } else {
+                Auth::user()->profile()->update([
+                    "title" => $data["title"],
+                    "url" => $data["url"],
+                    "description" => $data["description"],
+                ]);
+            }
             return redirect("/profile/".$user->profile->user_id)->with("success", "Profile Updated");
         } else {
             return redirect("/profile/".$user->profile->user_id)->with("error", "Unauthorized Page!!");

@@ -33,12 +33,7 @@
                 <form action="{{route("post.update", $post->id)}}" method="POST">
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea rows="5" class="form-control"  name="content" id="article-ckeditor">{{$post->content}}</textarea>
-                    </div>
-                    <div class="custom-file mb-3">
-                        <input type="file" class="custom-file-input" id="validatedCustomFile">
-                        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                        <textarea rows="5" class="form-control"  name="content" id="article-ckeditor">{{$post->content ?? ""}}</textarea>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Message;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
@@ -13,7 +12,7 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
 
     public function __construct()
@@ -33,18 +32,18 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-            return view("posts.create_post");
+        return view("posts.create_post");
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -55,8 +54,7 @@ class PostsController extends Controller
         ]);
 
         $img_path = $request->file("img");
-        if (!is_null($img_path))
-        {
+        if (!is_null($img_path)) {
             $img_path = $request->file("img")->store("post_imgs", 'public');
             Auth::user()->messages()->create([
                 "content" => $data['content'],
@@ -85,10 +83,10 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function show(\App\Message $post)
+    public function show(Message $post)
     {
 //        $post = Message::findOrfail($id);
         return view("posts.show", [
@@ -99,18 +97,18 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function edit($id)
     {
         $post = Message::findOrFail($id);
-        if (Auth::user()->id == $post->user_id){
+        if (Auth::user()->id == $post->user_id) {
             return view("posts.edit", [
                 "post" => $post
             ]);
         } else {
-            return redirect("/post/".$post->id)->with("error", "Unauthorized Page!!");
+            return redirect("/post/" . $post->id)->with("error", "Unauthorized Page!!");
         }
 
     }
@@ -118,9 +116,9 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -129,26 +127,18 @@ class PostsController extends Controller
 
         // Update Post
 
-        $data = $this->validate($request, [
-            "content" => "required_without_all:title,img",
-            "img" => "required_without_all:title,content|image",
-        ]);
-
-        $img_path = $request->file("img");
-        if (!is_null($img_path))
-        {
-            $img_path = $request->file("img")->store("post_imgs", 'public');
+        if (Auth::user()->id == $post->user_id) {
+            $data = $this->validate($request, [
+                "content" => "required",
+            ]);
             $post->update([
                 "content" => $data['content'],
-                "img" => $img_path,
             ]);
+            return redirect("/post")->with("success", "Post Created!!");
         } else {
-            $post->update([
-                "content" => $data['content'],
-            ]);
+            return redirect("/post/" . $post->id)->with("error", "Unauthorized Page!!");
         }
 
-        return redirect("/post")->with("success", "Post Created!!");
 
 //        $post->content = $request->input("content");
 //        $post->img = $request->input('img');
@@ -165,18 +155,18 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function destroy($id)
     {
         $post = Message::find($id);
 
-        if (Auth::user()->id == $post->user_id){
+        if (Auth::user()->id == $post->user_id) {
             $post->delete();
             return redirect("/post")->with("success", "Post Deleted!!");
         } else {
-            return redirect("/post/".$post->id)->with("error", "Unauthorized Page!!");
+            return redirect("/post/" . $post->id)->with("error", "Unauthorized Page!!");
         }
 
     }

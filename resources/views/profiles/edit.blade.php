@@ -65,7 +65,7 @@
                 <div class="row">
                     <label for="profile_image" class="col-md-4 col-form-label">Profile Image</label>
 
-                    <input type="file" class="form-control-file" id="profile_image" name="profile_img">
+                    <input type="file" class="form-control-file form-control" id="profile_image" name="profile_img">
 
                     @if ($errors->has('profile_img'))
                         <strong>{{ $errors->first('profile_img') }}</strong>
@@ -75,6 +75,8 @@
                 <div class="row pt-4">
                     <button class="btn btn-primary">Save Profile</button>
                 </div>
+
+
 
             </div>
         </div>
