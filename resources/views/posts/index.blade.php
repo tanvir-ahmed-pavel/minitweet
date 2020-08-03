@@ -10,8 +10,8 @@
                 <div class="card mb-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center ml-3 mt-3">
+                        @if(!is_null($post->user->profile->profile_img))
                         <div>
-                            @if(!is_null($post->user->profile->profile_img))
                                 <a class="text-decoration-none"
                                    href="{{ url('/profile/'.$post->user->profile->user_id)}}">
                                     <div class="float-right overflow-hidden d-flex justify-content-center align-items-center position-relative"

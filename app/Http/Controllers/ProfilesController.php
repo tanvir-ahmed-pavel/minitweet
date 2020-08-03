@@ -64,19 +64,19 @@ class ProfilesController extends Controller
             "url" => "",
         ]);
 
-        $img_path = $request->file("img");
+        $img_path = $request->file("profile_img");
 
         if (Auth::user()->id == $user->profile->user_id){
             if (!is_null($img_path)) {
-                $img_path = $request->file("img")->store("profile_imgs", 'public');
-                Auth::user()->profile()->update([
+                $img_path = $request->file("profile_img")->store("profile_imgs", 'public');
+                $user->profile()->update([
                     "title" => $data["title"],
                     "url" => $data["url"],
                     "description" => $data["description"],
                     "profile_img" => $img_path,
                 ]);
             } else {
-                Auth::user()->profile()->update([
+                $user->profile()->update([
                     "title" => $data["title"],
                     "url" => $data["url"],
                     "description" => $data["description"],
