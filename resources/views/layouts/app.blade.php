@@ -10,7 +10,6 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
 {{--    <link rel="dns-prefetch" href="//fonts.gstatic.com">--}}
@@ -18,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 <body>
     <div id="app">
@@ -32,12 +31,14 @@
             </div>
 
         </main>
+        <footer class="blog-footer text-center" style="background-color: #d5d5d5; padding: 20px;">
+            <p>Blog template built for ©{{config('app.name', 'Laravel')}} by Pavel Ahmed® 🐸🐸</p>
+            <p>
+                <a href="/posts">Back to Top</a>
+            </p>
+        </footer>
+
     </div>
-    <footer class="blog-footer text-center" style="background-color: #d5d5d5; padding: 20px;">
-        <p>Blog template built for ©MiniTweet by Pavel Ahmed® 🐸🐸</p>
-        <p>
-            <a href="/posts">Back to Top</a>
-        </p>
-    </footer>
+    <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

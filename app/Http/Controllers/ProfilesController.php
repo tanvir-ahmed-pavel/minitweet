@@ -25,16 +25,18 @@ class ProfilesController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($id)
+    public function index(User $user)
     {
-        $user = User::findOrFail($id);
+        $follows = (Auth::user()) ? Auth::user()->following->contains($user->profile) : false;
+
         $posts = $user->messages()->get();
 
 //        $posts = User::find($user_id)->messages()->orderBy("updated_at", "desc")->paginate(8);
 
         return view('profiles.profile', [
             "user" => $user,
-            "post" => $posts
+            "posts" => $posts,
+            "follows" => $follows,
         ]);
     }
 

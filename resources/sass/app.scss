@@ -1,10 +1,13 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;600&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';

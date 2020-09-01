@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Message;
 
 class User extends Authenticatable
 {
@@ -36,10 +37,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function messages(){
-        return $this->hasMany("App\Message")->orderBy("updated_at", "desc");
+        return $this->hasMany('App\Message')->orderBy("updated_at", "desc");
     }
     public function profile(){
         return $this->hasOne("App\Profile");
     }
+
+    public function following()
+    {
+        return $this->belongsToMany("App\Profile");
+    }
+
+    public function likes()
+    {
+        return $this->hasMany("App\Like");
+    }
+
+    public function comments()
+    {
+        return $this->hasManyThrough("App\Comment", "App\Message");
+    }
+
 }

@@ -22,12 +22,20 @@ class PostsController extends Controller
 
     public function index()
     {
-        $posts = Message::orderBy("updated_at", "desc")->paginate(6);
 
-        return view("posts.index", [
-            "posts" => $posts
-        ]);
+       $posts = Message::orderBy("updated_at", "desc")->paginate(12);
+
+//        $liked = (Auth::user()) ? Auth::user()->likes()->contains($user->profile) : false;
+//        dd($likes);
+//        $likes = $posts->getLiked;
+//        dd($likes);
+
+            return view("posts.index", [
+                "posts" => $posts,
+            ]);
+
     }
+
 
     /**
      * Show the form for creating a new resource.
