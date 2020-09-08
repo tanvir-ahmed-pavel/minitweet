@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,6 +25,8 @@ class PostsController extends Controller
     {
 
        $posts = Message::orderBy("updated_at", "desc")->paginate(12);
+
+
 
 //        $liked = (Auth::user()) ? Auth::user()->likes()->contains($user->profile) : false;
 //        dd($likes);

@@ -24,7 +24,7 @@ Auth::routes();
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
 Route::post('/follow/{user}', 'FollowersController@store')->name('profile.follow');
 Route::get('/post/like/{user}', 'LikesController@store')->name('store.like');
-Route::post('/like/{post}', 'LikesController@index')->name('get.like');
+Route::get('/like/{post}', 'LikesController@index')->name('get.like');
 Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');
 Route::patch('/profile/{user}', 'ProfilesController@update')->name('profile.update');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,12 @@ class CommentsController extends Controller
 
     public function index($id)
     {
-        return Message::findOrFail($id)->comments()->get();
+//        $comment = Message::findOrFail($id)->comments()->get();
+         $comment =  Message::findOrFail($id)->comments()->latest()->take(3)->get();
+//        $comment->with(user);
+        return $comment;
+
+//        $likes = Message::findOrFail($id)->likes()->get();
 
     }
 
@@ -44,10 +50,14 @@ class CommentsController extends Controller
      */
     public function store(Request $request, $id)
     {
-         $this->validate($request, [
+         $data = $this->validate($request, [
             "comment" => "required",
         ]);
-        Message::find($id)->comments()->create($request->all());
+        Message::find($id)->comments()->create([
+            'comment' => $data['comment'],
+            'user_id' => Auth::user()->id,
+        ]);
+
         return response()->json("ok");
 
     }

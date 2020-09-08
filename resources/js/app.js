@@ -22,8 +22,8 @@ window.Event = new Vue();
 
 import Follow from './components/FollowComponent';
 import Comment from './components/CommentComponent';
-import ShowComments from './components/ShowCommentsComponent';
 import Like from './components/LikeComponent';
+
 
 
 /**
@@ -37,7 +37,6 @@ new Vue({
     components:{
         Follow,
         Comment,
-        ShowComments,
         Like,
     }
 });

@@ -14,23 +14,18 @@ class LikesController extends Controller
     }
 
     public function index($id){
-//        $likes = Message::findOrFail($id)->likedBy->contains(Auth::user()->id);
+        $likes = Message::findOrFail($id)->likes->contains(Auth::user()->id);
 //        $likes = Message::findOrFail($id)->get();
-        $likes = (Auth::user()) ? Message::findOrFail($id)->likedBy->contains(Auth::user()->id) : false;
+//        $likes = (Auth::user()) ? Message::findOrFail($id)->likedBy->contains(Auth::user()->id) : false;
 
-        return response()->json(['name' => 'Abigail',]);
+        return $likes;
 
     }
 
     public function store(Request $request, $id){
 
-//        $a = Message::find($id)->likes->contains(Auth::user()->id);
-        $a = Auth::user()->likes->contains($id);
-//       $ok =  Auth::user()->likes()->create([
+        return Auth::user()->likes()->toggle($id);
 
-//           "message_id" => $id,
-//       ]);
-       dd($a);
     }
 
 }

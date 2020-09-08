@@ -6,7 +6,7 @@
 
     <div class="row">
         @foreach($posts as $post)
-            <div class="col-md-8 pb-5">
+            <div class="col-md-8 pb-3">
 
                 <div class="card mb-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center">
@@ -86,13 +86,25 @@
                         <img class="card-img-bottom" src="/storage/{{$post->img}}" alt="Card image cap">
                     @endif
 
-                    <div class="card-footer">
-
-                        <like post-id="{{$post->id}}" like="{{false}}"></like>
+                    <div class="card-footer pb-3 mb-2">
+                        <like post-id="{{$post->id}}" likes="{{count($post->likes)}}"
+                              comments="{{count($post->comments)}}"></like>
                     </div>
 
-                    <show-comments post-id="{{$post->id}}" like="" ></show-comments>
-                    <Comment csrf="{{csrf_token()}}"  post-id="{{$post->id}}"></Comment>
+                    @foreach($post->comments as $comment)
+
+                            <div class="mt-3 mr-3 ml-3 pr-4 pl-4 mb-2" style="background-color: rgba(0,0,0,0.05); border-radius: 20px">
+                                <div class="lead">
+                                    <a href="{{ url('/profile/'.$comment->user->id)}}" class="text-decoration-none lead">
+                                    {{$comment->user->user_name}}
+                                </a>
+                                </div>
+                                <div class="lead p-0 m-0">{{$comment->comment}}</div>
+                            </div>
+
+                    @endforeach
+
+                    <Comment csrf="{{csrf_token()}}" post-id="{{$post->id}}" user-img="{{Auth::user()->profile->profile_img}}"></Comment>
 
                 </div>
 
