@@ -23,10 +23,19 @@ class CommentsController extends Controller
 
     public function index($id)
     {
-//        $comment = Message::findOrFail($id)->comments()->get();
-         $comment =  Message::findOrFail($id)->comments()->latest()->take(3)->get();
-//        $comment->with(user);
-        return $comment;
+
+        $commentsCount = Message::findOrFail($id)->comments()->count();
+        $comments =  Message::findOrFail($id)->comments()->orderBy('created_at', 'desc')->latest()->take(2)->get();
+        $user= [];
+        foreach ($comments as $comment){
+             $user[] = $comment->user->profile;
+        }
+        $comments->merge($user);
+
+        return response()->json(array(
+            'comments' => $comments,
+            'commentsCount' => $commentsCount,
+        ));
 
 //        $likes = Message::findOrFail($id)->likes()->get();
 
@@ -68,9 +77,20 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showComment($id)
+    public function show($id)
     {
+        $commentsCount = Message::findOrFail($id)->comments()->count();
+        $comments =  Message::findOrFail($id)->comments()->orderBy('created_at', 'desc')->latest()->get();
+        $user= [];
+        foreach ($comments as $comment){
+            $user[] = $comment->user->profile;
+        }
+        $comments->merge($user);
 
+        return response()->json(array(
+            'comments' => $comments,
+            'commentsCount' => $commentsCount,
+        ));
 
     }
 
@@ -105,6 +125,16 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        if (Auth::user()->id == $comment->user_id) {
+            $comment->delete();
+            return response()->json([
+                'msg' => 'Deleted'
+            ]);
+        } else {
+            return response()->json([
+                'msg' => 'U cant delete dis!!'
+            ]);
+        }
     }
 }

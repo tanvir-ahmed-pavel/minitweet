@@ -84,7 +84,7 @@ class ProfilesController extends Controller
                     "description" => $data["description"],
                 ]);
             }
-            return redirect("/profile/".$user->profile->user_id)->with("success", "Profile Updated");
+            return redirect("/profile/".$user->profile->user_id."/edit")->with("success", "Profile Updated");
         } else {
             return redirect("/profile/".$user->profile->user_id)->with("error", "Unauthorized Page!!");
         }

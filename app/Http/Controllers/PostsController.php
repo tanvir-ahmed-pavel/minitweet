@@ -59,7 +59,6 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, [
-            "title" => "required_without_all:content,img",
             "content" => "required_without_all:title,img",
             "img" => "required_without_all:title,content|image",
         ]);
