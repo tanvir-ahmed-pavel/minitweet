@@ -16,9 +16,9 @@ class CreateProfileUserTable extends Migration
         Schema::create('profile_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('profile_id');
-            $table->foreign('profile_id')->references('id')->on('profiles');
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

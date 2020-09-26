@@ -1949,28 +1949,132 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log('Component mounted.');
+    var _this = this;
+
+    Event.$on('cmtCreated', function () {
+      _this.getCmnt();
+    });
+    Event.$on('cmtDeleted', function () {
+      _this.getCmnt();
+    });
+    this.getCmnt();
   },
-  props: ['csrf', 'PostId', 'UserImg'],
+  props: ['csrf', 'PostId', 'UserImg', 'UserName', 'UserId', 'url'],
   data: function data() {
     return {
       comment: '',
-      n_comment: ''
+      get_comments: [],
+      n_comment: '',
+      count: ''
     };
   },
   methods: {
     submit: function submit() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post('/post/' + this.PostId + '/comment', {
         comment: this.comment
       }).then(function (response) {
-        _this.n_comment = _this.comment;
-        _this.comment = '';
+        _this2.comment = '';
         Event.$emit('cmtCreated');
-        console.log(response.data);
+      });
+    },
+    getCmnt: function getCmnt() {
+      var _this3 = this;
+
+      if (this.url === "http://tweet.r/post/" + this.PostId) {
+        axios.post('/comment/' + this.PostId).then(function (response) {
+          _this3.get_comments = response.data.comments;
+          _this3.get_comments = _this3.get_comments.reverse();
+        });
+      } else {
+        axios.post('/post/comment/' + this.PostId).then(function (response) {
+          _this3.get_comments = response.data.comments;
+          _this3.get_comments = _this3.get_comments.reverse();
+          _this3.count = response.data.commentsCount;
+        });
+      }
+    },
+    delete_cmnt: function delete_cmnt(index) {
+      axios["delete"]('/post/comment/delete/' + index).then(function (response) {
+        console.log(response.data.msg);
+        Event.$emit('cmtDeleted');
       });
     }
   }
@@ -2065,12 +2169,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['PostId', 'likes', 'comments'],
   mounted: function mounted() {
+    var _this = this;
+
     this.getlike();
     this.countComments();
-    console.log(this.PostId);
+    Event.$on('cmtCreated', function () {
+      _this.countComments();
+    });
+    Event.$on('cmtDeleted', function () {
+      _this.countComments();
+    });
   },
   data: function data() {
     return {
@@ -2081,34 +2193,29 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getlike: function getlike() {
-      var _this = this;
+      var _this2 = this;
 
-      axios.get('/like/' + this.PostId).then(function (response) {
-        _this.status = response.data; // alert(response.data.name);
-
-        console.log(response.data);
+      axios.post('/like/' + this.PostId).then(function (response) {
+        _this2.status = response.data;
       });
     },
     countComments: function countComments() {
-      var _this2 = this;
-
-      Event.$on('cmtCreated', function () {
-        _this2.comment = _this2.comment + 1;
-      });
-      console.log('No Comment Created');
-    },
-    likePost: function likePost() {
       var _this3 = this;
 
-      axios.get('/post/like/' + this.PostId).then(function (response) {
-        _this3.status = !_this3.status; // this.getlike();
+      axios.post('/post/comment/' + this.PostId).then(function (response) {
+        _this3.comment = response.data.commentsCount;
+      });
+    },
+    likePost: function likePost() {
+      var _this4 = this;
 
-        console.log(response.data); // Getting Likes Count
+      axios.post('/post/like/' + this.PostId).then(function (response) {
+        _this4.status = !_this4.status; // Getting Likes Count
 
-        if (_this3.status === true) {
-          _this3.likesCount = _this3.likesCount + 1;
+        if (_this4.status === true) {
+          _this4.likesCount = _this4.likesCount + 1;
         } else {
-          _this3.likesCount = _this3.likesCount - 1;
+          _this4.likesCount = _this4.likesCount - 1;
         }
       })["catch"](function (errors) {
         if (errors.response.status === 401) {
@@ -6563,7 +6670,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.button[data-v-d6b6866e] {\n\tborder: none;\n\tborder-radius: 15px !important;\n\tbackground-color: rgba(0, 0, 0, 0.09);\n}\n.button[data-v-d6b6866e]:hover {\n\tbackground-color: rgb(34, 156, 241)\n}\n.button[data-v-d6b6866e]:disabled {\n\tbackground-color: rgba(0, 0, 0, 0.09);\n}\n.input[data-v-d6b6866e] {\n\theight: 40px;\n\tbackground-color: rgba(0, 0, 0, 0.07) !important;\n\tborder-radius: 20px !important;\n}\n.img[data-v-d6b6866e] {\n\theight: 100% !important;\n\twidth: auto !important;\n}\n.img-wrapper[data-v-d6b6866e] {\n\theight: 38px;\n\twidth: 38px;\n\tborder: 1.5px solid rgba(0, 0, 0, 0.77);\n\tborder-radius: 50%;\n\tbackground-color: rgba(255, 255, 0, 0)\n}\n.img-border[data-v-d6b6866e] {\n\theight: 35px;\n\twidth: 35px;\n\tborder: 2px solid #ffffff;\n\tborder-radius: 50%;\n}\n\n\n", ""]);
+exports.push([module.i, "\n.button[data-v-d6b6866e] {\n\tborder: none;\n\tborder-radius: 10px !important;\n\tbackground-color: rgba(0, 0, 0, 0.09);\n}\n.button[data-v-d6b6866e]:hover {\n\tbackground-color: rgb(34, 156, 241)\n}\n.button[data-v-d6b6866e]:disabled {\n\tbackground-color: rgba(0, 0, 0, 0.09);\n}\n.input[data-v-d6b6866e] {\n\theight: 40px;\n\tbackground-color: rgba(0, 0, 0, 0.07) !important;\n\tborder-radius: 20px !important;\n}\n.img[data-v-d6b6866e] {\n\theight: 100% !important;\n\twidth: auto !important;\n}\n.img-wrapper[data-v-d6b6866e] {\n\theight: 38px;\n\twidth: 38px;\n\tborder: 1.5px solid rgba(0, 0, 0, 0.77);\n\tborder-radius: 50%;\n\tbackground-color: rgba(255, 255, 0, 0)\n}\n.img-border[data-v-d6b6866e] {\n\theight: 35px;\n\twidth: 35px;\n\tborder: 2px solid #ffffff;\n\tborder-radius: 50%;\n}\n\n\n", ""]);
 
 // exports
 
@@ -38408,93 +38515,327 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [_vm._v("\n\t\t" + _vm._s(_vm.n_comment) + "\n\t")]),
-    _vm._v(" "),
     _c(
-      "form",
+      "div",
       {
-        attrs: { action: "" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submit($event)
-          }
+        staticClass: "scrollbar-secondary thin overflow-auto",
+        staticStyle: {
+          width: "100%",
+          "margin-left": "0",
+          "max-height": "350px"
         }
       },
       [
-        _c("div", { staticClass: "input-group mb-2 p-4 pt-2 " }, [
-          _c("div", { staticClass: "mr-2" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "float-right overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper"
-              },
-              [
-                _vm.UserImg
-                  ? _c("img", {
-                      staticClass: "img",
-                      attrs: { src: "/storage/" + _vm.UserImg, alt: "img" }
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                !_vm.UserImg
-                  ? _c("i", { staticClass: "fas fa-user-ninja" })
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass:
-                    "d-flex justify-content-center align-items-center position-absolute img-border"
-                })
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.comment,
-                expression: "comment"
-              }
-            ],
-            staticClass: "form-control border-0 input",
-            attrs: { type: "text", placeholder: "Add a Comment..." },
-            domProps: { value: _vm.comment },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.comment = $event.target.value
-              }
+        _c(
+          "div",
+          [
+            Number(_vm.count) > 2 &&
+            _vm.url !== "http://tweet.r/post/" + _vm.PostId
+              ? _c("div", { staticClass: "ml-5" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "text-decoration-none text-muted",
+                      attrs: { href: "/post/" + _vm.PostId }
+                    },
+                    [_vm._v("see all comments....")]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.get_comments, function(get_comment) {
+              return _c(
+                "div",
+                {
+                  staticClass: "d-flex align-items-center mt-3 pl-3 pr-3 mb-2"
+                },
+                [
+                  _c("div", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "text-decoration-none",
+                        attrs: { href: "/profile/" + get_comment.user.id }
+                      },
+                      [
+                        _c("div", { staticClass: "mr-2" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper"
+                            },
+                            [
+                              get_comment.user.profile.profile_img
+                                ? _c("img", {
+                                    staticClass: "img",
+                                    attrs: {
+                                      src:
+                                        "/storage/" +
+                                        get_comment.user.profile.profile_img,
+                                      alt: "img"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              !get_comment.user.profile.profile_img
+                                ? _c("img", {
+                                    staticClass: "img",
+                                    attrs: {
+                                      src:
+                                        "/storage/profile_imgs/default-avatar.png",
+                                      alt: "img"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("div", {
+                                staticClass:
+                                  "d-flex justify-content-center align-items-center position-absolute img-border"
+                              })
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "div",
+                      {
+                        staticClass: " pr-4 pl-3 pb-1",
+                        staticStyle: {
+                          "background-color": "rgba(0,0,0,0.05)",
+                          "border-radius": "15px"
+                        }
+                      },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-decoration-none lead",
+                            staticStyle: { "font-size": "18px" },
+                            attrs: { href: "/profile/" + get_comment.user.id }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t" +
+                                _vm._s(get_comment.user.user_name) +
+                                "\n\t\t\t\t\t\t"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "p-0 m-0" }, [
+                          _vm._v(_vm._s(get_comment.comment))
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  Number(_vm.UserId) === get_comment.user_id
+                    ? _c("div", { staticClass: "ml-2" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "button btn btn-outline-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.delete_cmnt(get_comment.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "far fa-trash-alt" })]
+                        )
+                      ])
+                    : _vm._e()
+                ]
+              )
+            })
+          ],
+          2
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", [
+      _vm.n_comment
+        ? _c(
+            "div",
+            { staticClass: "d-flex align-items-center mt-3 pl-3 pr-3 mb-2" },
+            [
+              _c("div", [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-decoration-none",
+                    attrs: { href: "/profile/" + _vm.UserId }
+                  },
+                  [
+                    _c("div", { staticClass: "mr-2" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper"
+                        },
+                        [
+                          _c("img", {
+                            staticClass: "img",
+                            attrs: {
+                              src: "/storage/" + _vm.UserImg,
+                              alt: "img"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass:
+                              "d-flex justify-content-center align-items-center position-absolute img-border"
+                          })
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: " pr-4 pl-3 pb-1",
+                    staticStyle: {
+                      "background-color": "rgba(0,0,0,0.05)",
+                      "border-radius": "15px"
+                    }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "text-decoration-none lead",
+                        staticStyle: { "font-size": "18px" },
+                        attrs: { href: "/profile/" + _vm.UserId }
+                      },
+                      [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(_vm.UserName) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-0 m-0" }, [
+                      _vm._v(_vm._s(_vm.n_comment))
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "ml-2" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "button btn btn-outline-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.delete_cmnt(_vm.get_comment.id)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "far fa-trash-alt" })]
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "border-bottom" }, [
+      _c(
+        "form",
+        {
+          attrs: { action: "" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submit($event)
             }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group-append pl-2" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn button",
-                class: _vm.comment
-                  ? "btn-outline-primary"
-                  : "btn-outline-secondary",
-                attrs: { disabled: !_vm.comment, type: "submit" }
-              },
-              [_c("i", { staticClass: "far fa-paper-plane fa-1x" })]
-            ),
+          }
+        },
+        [
+          _c("div", { staticClass: "input-group mb-2 p-3 pt-4 " }, [
+            _c("div", { staticClass: "mr-2" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "float-right overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper"
+                },
+                [
+                  _c("img", {
+                    staticClass: "img",
+                    attrs: { src: "/storage/" + _vm.UserImg, alt: "img" }
+                  }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass:
+                      "d-flex justify-content-center align-items-center position-absolute img-border"
+                  })
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("input", {
-              attrs: { type: "hidden", name: "_token", id: "csrf-token" },
-              domProps: { value: _vm.csrf }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(0)
-        ])
-      ]
-    )
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.comment,
+                  expression: "comment"
+                }
+              ],
+              staticClass: "form-control border-0 input",
+              attrs: { type: "text", placeholder: "Add a Comment..." },
+              domProps: { value: _vm.comment },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.comment = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append pl-2" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn button",
+                  class: _vm.comment
+                    ? "btn-outline-primary"
+                    : "btn-outline-secondary",
+                  attrs: { disabled: !_vm.comment, type: "submit" }
+                },
+                [_c("i", { staticClass: "far fa-paper-plane fa-1x" })]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "hidden", name: "_token", id: "csrf-token" },
+                domProps: { value: _vm.csrf }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -38605,10 +38946,21 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", [
-          _vm.PostId
-            ? _c("b", { staticClass: "pl-3" }, [_vm._v(_vm._s(this.comment))])
-            : _vm._e(),
-          _vm._v(" Comments\n\t\t")
+          _c(
+            "a",
+            {
+              staticClass: "text-decoration-none text-muted",
+              attrs: { href: "/post/" + _vm.PostId }
+            },
+            [
+              _vm.PostId
+                ? _c("b", { staticClass: "pl-3" }, [
+                    _vm._v(_vm._s(this.comment))
+                  ])
+                : _vm._e(),
+              _vm._v(" Comments\n\t\t\t")
+            ]
+          )
         ])
       ]
     )

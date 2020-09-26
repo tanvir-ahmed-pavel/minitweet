@@ -16,9 +16,9 @@ class CreateMessageUserTable extends Migration
         Schema::create('message_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('message_id');
-            $table->foreign('message_id')->references('id')->on('messages');
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->timestamps();
         });
     }

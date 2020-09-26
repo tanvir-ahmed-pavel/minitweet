@@ -17,16 +17,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/scroll.css') }}">
+{{--    <link type="text/css" rel="stylesheet" href="{{ mix('css/ok.css') }}">--}}
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
-<body>
+<body style="min-height: 100vh">
     <div id="app">
         @include("layouts.nav")
         <div class="container" style="padding-left: 7%; padding-right: 7%;">
             @include("inc.errors")
         </div>
         <main class="py-4">
-            <div class="container" style="padding-left: 7%; padding-right: 7%;">
+            <div class="container min-vh-100">
                 @yield('content')
             </div>
 

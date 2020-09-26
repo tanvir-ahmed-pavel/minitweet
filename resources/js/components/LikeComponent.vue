@@ -15,8 +15,9 @@
 				</div>
 			</div>
 			<div>
-				
+				<a :href="'/post/' + PostId" class="text-decoration-none text-muted">
 				<b v-if="PostId" class="pl-3">{{this.comment}}</b> Comments
+				</a>
 			</div>
 		</div>
 		
@@ -28,11 +29,17 @@
 
 <script>
     export default {
+        
         props: ['PostId', 'likes', 'comments'],
         mounted() {
             this.getlike();
             this.countComments();
-            console.log(this.PostId);
+            Event.$on('cmtCreated', () => {
+                this.countComments();
+            });
+            Event.$on('cmtDeleted', () => {
+                this.countComments();
+            });
         },
         data: function () {
             return {
@@ -44,25 +51,22 @@
         
         methods: {
             getlike(){
-                axios.get('/like/' + this.PostId)
+                axios.post('/like/' + this.PostId)
                     .then(response =>{
                         this.status = response.data;
-                        // alert(response.data.name);
-                        console.log(response.data)
                     })
             },
             countComments() {
-                Event.$on('cmtCreated', () => {
-                    this.comment= this.comment+1;
-                });
-                console.log('No Comment Created');
+                axios.post('/post/comment/' + this.PostId)
+	                    .then(response => {
+                            this.comment= response.data.commentsCount;
+	                    })
+                
             },
             likePost() {
-                axios.get('/post/like/'+ this.PostId)
+                axios.post('/post/like/'+ this.PostId)
                     .then(response => {
                         this.status = !this.status;
-                        // this.getlike();
-                        console.log(response.data);
                         
                         // Getting Likes Count
                         if (this.status === true){
