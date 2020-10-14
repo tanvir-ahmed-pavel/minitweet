@@ -11,7 +11,13 @@
 					</button>
 				</div>
 				<div>
-					<b class="pl-3">{{this.likesCount}}</b> Likes
+					
+					<!-- Button trigger modal -->
+					<a href="#" type="button" class="text-decoration-none text-dark" data-toggle="modal" :data-target="DataTarget">
+						<b class="pl-3">{{this.likesCount}}</b> Likes
+					</a>
+					
+					
 				</div>
 			</div>
 			<div>
@@ -30,7 +36,7 @@
 <script>
     export default {
         
-        props: ['PostId', 'likes', 'comments'],
+        props: ['PostId', 'likes', 'comments', 'DataTarget'],
         mounted() {
             this.getlike();
             this.countComments();

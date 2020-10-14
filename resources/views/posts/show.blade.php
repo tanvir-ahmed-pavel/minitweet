@@ -30,7 +30,8 @@
                             <div class="ml-3">
                                 <div class="p-0 m-0">
                                     <a class="text-decoration-none lead text-dark" style="font-size: 20px;"
-                                       href="{{ url('/profile/'.$post->user->profile->user_id)}}">{{ $post->user->user_name }}</a>
+                                       href="{{ url('/profile/'.$post->user->profile->user_id)}}">{{ $post->user->user_name }}
+                                    </a>
                                 </div>
 
                                 {{--                                    post creation time--}}
@@ -83,17 +84,22 @@
 
                     {{--                    post content--}}
 
-                    <div class="card-body p-0 ml-3 mt-2">
-                        <p class="card-text lead mb-1">{{substr($post->content, 0, 50)}}...</p>
-                        <div class="d-flex justify-content-between align-items-center pb-2">
+                    @if(is_null($post->img))
+                        <div class="card-body p-0 ml-3 mr-3 mt-2">
+                            <div class="d-flex justify-content-between align-items-center pb-2">
+                                <p class="card-text lead pb-3 pt-3" style="font-size: 22px; letter-spacing: 1px; word-spacing: 1px;">{!! nl2br(e($post->content)) !!} </p>
+                            </div>
                         </div>
-                    </div>
-                    @if(!is_null($post->img))
+
+                    @else
+                        <div class="card-body p-0 ml-3 mr-3 mt-2">
+                            <p class="card-text lead mb-1">{!! nl2br(e($post->content)) !!}</p>
+                        </div>
                         <img class="card-img-bottom" src="/storage/{{$post->img}}" alt="Card image cap">
                     @endif
                     <div class="card-footer pt-2 pb-2 mb-2 border-bottom">
                         <like post-id="{{$post->id}}" likes="{{count($post->likes)}}"
-                              comments="{{count($post->comments)}}"></like>
+                              comments="{{count($post->comments)}}" data-target="#likeModal{{$post->id}}"></like>
                     </div>
 
                     {{--                    comment section--}}
@@ -101,6 +107,68 @@
                     <Comment csrf="{{csrf_token()}}" user-id="{{Auth::user()->id}}"
                              user-name="{{Auth::user()->user_name}}" post-id="{{$post->id}}"
                              user-img="{{Auth::user()->profile->profile_img ?? "profile_imgs/default-avatar.png"}}" url="{{url()->current()}}"></Comment>
+                    <!-- All Modal -->
+
+                    <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1" aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header pb-0">
+                                    <h4>People Who Liked your post:</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body scrollbar scrollbar-secondary">
+                                    @foreach($post->likes as $user)
+                                        <table class="table table-sm table-borderless border-bottom m-0">
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div>
+                                                            <a class="text-decoration-none"
+                                                               href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                                <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
+                                                                     style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
+
+                                                                    <img src="/storage/{{$user->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
+                                                                         alt="img"
+                                                                         style="height: 100%; width: auto;">
+                                                                    <div class="d-flex justify-content-center align-items-center position-absolute"
+                                                                         style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <div class="ml-3">
+                                                            <div class="p-0 m-0">
+                                                                <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
+                                                                   href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                                    {{ $user->user_name}}
+                                                                </a>
+                                                            </div>
+
+                                                            {{--                                    name--}}
+
+                                                            <div class="p-0 text-muted">
+                                                                <a class="text-decoration-none text-muted" style="font-size: 14px;"
+                                                                   href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                                    {{ $user->name}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @if($user->id !== Auth::user()->id)
+                                                            <follow user-id="{{$user->id}}" follows="{{Auth::user()->following->contains($user->profile)}}"></follow>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

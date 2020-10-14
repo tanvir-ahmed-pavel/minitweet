@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +25,12 @@ class PostsController extends Controller
     public function index()
     {
 
-       $posts = Message::orderBy("updated_at", "desc")->paginate(12);
+       $posts = Message::orderBy("updated_at", "desc")->paginate(6);
 
+        $users=[];
+        foreach (Auth::user()->following as $following){
+            $users []= User::find($following->user_id);
+        }
 
 
 //        $liked = (Auth::user()) ? Auth::user()->likes()->contains($user->profile) : false;
@@ -35,6 +40,7 @@ class PostsController extends Controller
 
             return view("posts.index", [
                 "posts" => $posts,
+                "users" => $users,
             ]);
 
     }
@@ -59,8 +65,8 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, [
-            "content" => "required_without_all:title,img",
-            "img" => "required_without_all:title,content|image",
+            "content" => "required_without_all:img",
+            "img" => "required_without_all:content|image",
         ]);
 
         $img_path = $request->file("img");
@@ -139,12 +145,12 @@ class PostsController extends Controller
 
         if (Auth::user()->id == $post->user_id) {
             $data = $this->validate($request, [
-                "content" => "required",
+                "content" => "",
             ]);
             $post->update([
                 "content" => $data['content'],
             ]);
-            return redirect("/post")->with("success", "Post Created!!");
+            return redirect("/post")->with("success", "Post Updated!!");
         } else {
             return redirect("/post/" . $post->id)->with("error", "Unauthorized Page!!");
         }

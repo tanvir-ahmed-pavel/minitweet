@@ -165,7 +165,6 @@
             delete_cmnt(index) {
                 axios.delete('/post/comment/delete/' + index)
                     .then(response => {
-                        console.log(response.data.msg);
                         Event.$emit('cmtDeleted');
                     })
             },

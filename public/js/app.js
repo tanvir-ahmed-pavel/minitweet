@@ -2073,7 +2073,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     delete_cmnt: function delete_cmnt(index) {
       axios["delete"]('/post/comment/delete/' + index).then(function (response) {
-        console.log(response.data.msg);
         Event.$emit('cmtDeleted');
       });
     }
@@ -2170,8 +2169,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['PostId', 'likes', 'comments'],
+  props: ['PostId', 'likes', 'comments', 'DataTarget'],
   mounted: function mounted() {
     var _this = this;
 
@@ -38940,8 +38945,24 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", [
-            _c("b", { staticClass: "pl-3" }, [_vm._v(_vm._s(this.likesCount))]),
-            _vm._v(" Likes\n\t\t\t")
+            _c(
+              "a",
+              {
+                staticClass: "text-decoration-none text-dark",
+                attrs: {
+                  href: "#",
+                  type: "button",
+                  "data-toggle": "modal",
+                  "data-target": _vm.DataTarget
+                }
+              },
+              [
+                _c("b", { staticClass: "pl-3" }, [
+                  _vm._v(_vm._s(this.likesCount))
+                ]),
+                _vm._v(" Likes\n\t\t\t\t")
+              ]
+            )
           ])
         ]),
         _vm._v(" "),
