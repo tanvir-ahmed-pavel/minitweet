@@ -27,10 +27,10 @@ class PostsController extends Controller
 
        $posts = Message::orderBy("updated_at", "desc")->paginate(6);
 
-        $users=[];
-        foreach (Auth::user()->following as $following){
-            $users []= User::find($following->user_id);
-        }
+        $users= User::all();
+//        foreach (Auth::user()->following as $following){
+//            $users[]= User::find($following->user_id);
+//        }
 
 
 //        $liked = (Auth::user()) ? Auth::user()->likes()->contains($user->profile) : false;

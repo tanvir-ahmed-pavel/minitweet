@@ -31,10 +31,16 @@ class ProfilesController extends Controller
 
         $posts = $user->messages()->get();
 
+        $users=[];
+        foreach (Auth::user()->following as $following){
+            $users[]= User::find($following->user_id);
+        }
+
 //        $posts = User::find($user_id)->messages()->orderBy("updated_at", "desc")->paginate(8);
 
         return view('profiles.profile', [
             "user" => $user,
+            "users" => $users,
             "posts" => $posts,
             "follows" => $follows,
         ]);

@@ -14,7 +14,7 @@
 
 {{--            follow--}}
 
-            <div class="col-8 pt-0">
+            <div class="col-4 pt-0">
                 <div class="ml-1">
                     <div class="d-flex justify-content-between align-items-baseline">
                         <div class="d-flex align-items-center pb-3">
@@ -49,11 +49,61 @@
                     <div><a href="https://www.{{$user->profile->url}}">{{$user->profile->url}}</a></div>
                 </div>
             </div>
+
+            <div class="col-md-4 mb-5 d-none d-sm-block" >
+                <div class="overflow-auto position-fixed scrollbar scrollbar-secondary thin" style="height: 500px; width: 300px; background-color: transparent;">
+                    <div>Following List</div>
+                    @foreach($users as $follower)
+                        <table class="table m-0">
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <a class="text-decoration-none"
+                                               href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
+                                                     style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
+
+                                                    <img src="/storage/{{$follower->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
+                                                         alt="img"
+                                                         style="height: 100%; width: auto;">
+                                                    <div class="d-flex justify-content-center align-items-center position-absolute"
+                                                         style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="p-0 m-0">
+                                                <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
+                                                   href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                    {{ $follower->user_name}}
+                                                </a>
+                                            </div>
+
+                                            {{--                                    name--}}
+
+                                            <div class="p-0 text-muted">
+                                                <a class="text-decoration-none text-muted" style="font-size: 14px;"
+                                                   href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                    {{ $follower->name}}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <follow user-id="{{$follower->id}}" follows="{{Auth::user()->following->contains($follower->profile)}}"></follow>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    @endforeach
+                </div>
+            </div>
+
         </div>
 
         @if(Auth::user()->profile->id == $user->profile->id)
             <div class="row">
-                <div class="col-md-8 pb-3 mx-auto">
+                <div class="col-md-8 pb-3">
                     <form action="{{action("PostsController@store")}}" method="POST" enctype="multipart/form-data">
                         <div class="card">
                             <div class="card-body pb-0">
@@ -107,8 +157,13 @@
 {{--        Post Section--}}
 
         <div class="row pt-4">
+
+
+
+{{--            Post--}}
+
             @foreach($posts as $post)
-                <div class="col-md-8 pb-2 mx-auto">
+                <div class="col-md-8 pb-2">
 
                     <div class="card mb-4 shadow-sm">
                         <div class="d-flex justify-content-between align-items-center">
@@ -240,13 +295,14 @@
                                  user-name="{{Auth::user()->user_name}}" post-id="{{$post->id}}"
                                  user-img="{{Auth::user()->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
                                  url="{{url()->current()}}"></Comment>
+
                         <!-- All Modal -->
 
                         <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1" aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header pb-0">
-                                        <h4>People Who Liked your post:</h4>
+                                        <h4>People Who Liked This Post:</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

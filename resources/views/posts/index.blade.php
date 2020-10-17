@@ -59,7 +59,7 @@
             {{--            Index Page Right Sidebar--}}
 
             <div class="col-md-4 mb-5 d-none d-sm-block" >
-                <div class="pb-5 pl-4 mb-5 ">
+                <div class="pb-5 pl-4 mb-4 ">
                     <div class="position-fixed">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -98,9 +98,10 @@
                 </div>
 
                 <div class="overflow-auto position-fixed scrollbar scrollbar-secondary thin" style="height: 500px; width: 300px; background-color: transparent;">
-                    <div>Following List</div>
+                    <div>Suggestions</div>
                     @foreach($users as $user)
-                        <table class="table m-0">
+                        @if(!Auth::user()->following->contains($user->id) && Auth::user()->id !== $user->id)
+                            <table class="table m-0">
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -141,6 +142,7 @@
                                 </td>
                             </tr>
                         </table>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -190,7 +192,6 @@
                                             @endif
                                         </small>
                                     </div>
-
 
                                 </div>
                             </div>
@@ -287,7 +288,7 @@
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header pb-0">
-                                        <h4>People Who Liked your post:</h4>
+                                        <h4>People Who Liked This Post:</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
