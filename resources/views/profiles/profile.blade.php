@@ -3,6 +3,9 @@
 @section('content')
 
     <div style="padding-left: 7%; padding-right: 7%;">
+{{--        @foreach($user->following as $follow)--}}
+{{--        {{$follow}}--}}
+{{--        @endforeach--}}
         <div class="row pt-2 pb-5">
             <div class="col-4">
                 <div class="float-right mr-5 shadow overflow-hidden d-flex justify-content-center align-items-center"
@@ -39,65 +42,98 @@
                     {{--                    <a href="/profile/{{ $user->id }}/edit">Edit Profile</a>--}}
                     {{--                @endcan--}}
 
+
+{{--                    Count Section--}}
+
                     <div class="d-flex">
-                        <div class="pr-5"><strong> {{$user->messages->count()}}</strong> posts</div>
+                        <div class="pr-5">
+                            <strong>{{$user->messages->count()}}</strong> posts
+                        </div>
                         <div class="pr-5"><strong>{{$user->profile->followers->count()}}</strong> followers</div>
-                        <div class="pr-5"><strong>{{$user->following->count()}}</strong> following</div>
+
+{{--                        Following Count--}}
+
+                        <div>
+                        <a href="#" type="button" class="text-decoration-none text-dark" data-toggle="modal" data-target="#followModal{{$user->profile->id}}">
+                            <strong>{{$user->following->count()}}</strong> following
+                        </a>
+
+                        {{--                        Following Model--}}
+
+                        <div class="modal fade" id="followModal{{$user->profile->id}}" tabindex="-1" aria-labelledby="followModal{{$user->profile->id}}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header pb-0">
+                                        <h4>Following:</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body scrollbar scrollbar-secondary">
+                                        @foreach($users as $follower)
+                                            <table class="table table-sm table-borderless border-bottom m-0">
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div>
+                                                                <a class="text-decoration-none"
+                                                                   href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                                    <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
+                                                                         style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
+
+                                                                        <img src="/storage/{{$follower->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
+                                                                             alt="img"
+                                                                             style="height: 100%; width: auto;">
+                                                                        <div class="d-flex justify-content-center align-items-center position-absolute"
+                                                                             style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            <div class="ml-3">
+                                                                <div class="p-0 m-0">
+                                                                    <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
+                                                                       href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                                        {{ $follower->user_name}}
+                                                                    </a>
+                                                                </div>
+
+                                                                {{--                                    name--}}
+
+                                                                <div class="p-0 text-muted">
+                                                                    <a class="text-decoration-none text-muted" style="font-size: 14px;"
+                                                                       href="{{ url('/profile/'.$follower->profile->user_id)}}">
+                                                                        {{ $follower->name}}
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            @if(Auth::user()->id !== $follower->id)
+                                                            <follow user-id="{{$follower->id}}" follows="{{Auth::user()->following->contains($follower->profile)}}"></follow>
+                                                                @else
+                                                                <div class="btn btn-sm btn-primary ml-4">It's you</div>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
                     </div>
+
+{{--                    Profile info section--}}
+
                     <div class="pt-4 font-weight-bold">{{$user->profile->title ?? "Hi! I'm a default Title" }}</div>
                     <div>{{$user->profile->description ?? "Hi! I'm a default Description" }}</div>
                     <div><a href="https://www.{{$user->profile->url}}">{{$user->profile->url}}</a></div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-5 d-none d-sm-block" >
-                <div class="overflow-auto position-fixed scrollbar scrollbar-secondary thin" style="height: 500px; width: 300px; background-color: transparent;">
-                    <div>Following List</div>
-                    @foreach($users as $follower)
-                        <table class="table m-0">
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div>
-                                            <a class="text-decoration-none"
-                                               href="{{ url('/profile/'.$follower->profile->user_id)}}">
-                                                <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
-                                                     style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
 
-                                                    <img src="/storage/{{$follower->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
-                                                         alt="img"
-                                                         style="height: 100%; width: auto;">
-                                                    <div class="d-flex justify-content-center align-items-center position-absolute"
-                                                         style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="ml-3">
-                                            <div class="p-0 m-0">
-                                                <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
-                                                   href="{{ url('/profile/'.$follower->profile->user_id)}}">
-                                                    {{ $follower->user_name}}
-                                                </a>
-                                            </div>
-
-                                            {{--                                    name--}}
-
-                                            <div class="p-0 text-muted">
-                                                <a class="text-decoration-none text-muted" style="font-size: 14px;"
-                                                   href="{{ url('/profile/'.$follower->profile->user_id)}}">
-                                                    {{ $follower->name}}
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <follow user-id="{{$follower->id}}" follows="{{Auth::user()->following->contains($follower->profile)}}"></follow>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    @endforeach
-                </div>
-            </div>
 
         </div>
 
@@ -157,8 +193,6 @@
 {{--        Post Section--}}
 
         <div class="row pt-4">
-
-
 
 {{--            Post--}}
 
@@ -298,6 +332,8 @@
 
                         <!-- All Modal -->
 
+{{--                        Like Model--}}
+
                         <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1" aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
@@ -362,7 +398,11 @@
 
                 </div>
             @endforeach
+
         </div>
+
+
+
     </div>
 
 @endsection

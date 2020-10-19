@@ -28,20 +28,23 @@ class PostsController extends Controller
        $posts = Message::orderBy("updated_at", "desc")->paginate(6);
 
         $users= User::all();
-//        foreach (Auth::user()->following as $following){
-//            $users[]= User::find($following->user_id);
-//        }
+        $suggestions=[];
+        foreach ($users as $user){
+            if(!Auth::user()->following->contains($user->profile->id) && Auth::user()->id !== $user->profile->user_id){
+                $suggestions[]=$user;
+            }
+        }
 
+        return view("posts.index", [
+            "posts" => $posts,
+            "suggestions" => $suggestions,
+        ]);
 
+//        Reference
 //        $liked = (Auth::user()) ? Auth::user()->likes()->contains($user->profile) : false;
 //        dd($likes);
 //        $likes = $posts->getLiked;
 //        dd($likes);
-
-            return view("posts.index", [
-                "posts" => $posts,
-                "users" => $users,
-            ]);
 
     }
 

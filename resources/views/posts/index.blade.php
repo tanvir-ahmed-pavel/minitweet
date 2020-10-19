@@ -58,7 +58,7 @@
 
             {{--            Index Page Right Sidebar--}}
 
-            <div class="col-md-4 mb-5 d-none d-sm-block" >
+            <div class="col-md-4 mb-5 d-none d-sm-block">
                 <div class="pb-5 pl-4 mb-4 ">
                     <div class="position-fixed">
                         <div class="d-flex align-items-center">
@@ -84,7 +84,7 @@
                                     </a>
                                 </div>
 
-                                {{--                                    name--}}
+                                {{--                                  Auth  name--}}
 
                                 <div class="p-0 text-muted">
                                     <a class="text-decoration-none lead text-dark" style="font-size: 14px;"
@@ -97,53 +97,60 @@
                     </div>
                 </div>
 
-                <div class="overflow-auto position-fixed scrollbar scrollbar-secondary thin" style="height: 500px; width: 300px; background-color: transparent;">
-                    <div>Suggestions</div>
-                    @foreach($users as $user)
-                        @if(!Auth::user()->following->contains($user->id) && Auth::user()->id !== $user->id)
+                {{--                Scrollable Section--}}
+
+                <div class="overflow-auto position-fixed scrollbar scrollbar-secondary thin"
+                     style="height: 500px; width: 300px; background-color: transparent;">
+                    <div class="border-bottom">Suggestions</div>
+                    @if(count($suggestions)>0)
+                        @foreach($suggestions as $user)
                             <table class="table m-0">
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div>
-                                            <a class="text-decoration-none"
-                                               href="{{ url('/profile/'.$user->profile->user_id)}}">
-                                                <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
-                                                     style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <a class="text-decoration-none"
+                                                   href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                    <div class="overflow-hidden d-flex justify-content-center align-items-center position-relative"
+                                                         style="height: 35px; width: 35px; border: 1.5px solid #000000; border-radius: 50%; background-color: rgba(255,255,0,0)">
 
-                                                    <img src="/storage/{{$user->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
-                                                         alt="img"
-                                                         style="height: 100%; width: auto;">
-                                                    <div class="d-flex justify-content-center align-items-center position-absolute"
-                                                         style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
+                                                        <img src="/storage/{{$user->profile->profile_img ?? "profile_imgs/default-avatar.png"}}"
+                                                             alt="img"
+                                                             style="height: 100%; width: auto;">
+                                                        <div class="d-flex justify-content-center align-items-center position-absolute"
+                                                             style="height: 33px; width: 33px; border: 2px solid #ffffff; border-radius: 50%;">
+                                                        </div>
                                                     </div>
+                                                </a>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="p-0 m-0">
+                                                    <a class="text-decoration-none lead text-dark"
+                                                       style="font-size: 18px;"
+                                                       href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                        {{ $user->user_name}}
+                                                    </a>
                                                 </div>
-                                            </a>
-                                        </div>
-                                        <div class="ml-3">
-                                            <div class="p-0 m-0">
-                                                <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
-                                                   href="{{ url('/profile/'.$user->profile->user_id)}}">
-                                                    {{ $user->user_name}}
-                                                </a>
-                                            </div>
 
-                                            {{--                                    name--}}
+                                                {{--                                    name--}}
 
-                                            <div class="p-0 text-muted">
-                                                <a class="text-decoration-none text-muted" style="font-size: 14px;"
-                                                   href="{{ url('/profile/'.$user->profile->user_id)}}">
-                                                    {{ $user->name}}
-                                                </a>
+                                                <div class="p-0 text-muted">
+                                                    <a class="text-decoration-none text-muted" style="font-size: 14px;"
+                                                       href="{{ url('/profile/'.$user->profile->user_id)}}">
+                                                        {{ $user->name}}
+                                                    </a>
+                                                </div>
                                             </div>
+                                            <follow user-id="{{$user->id}}"
+                                                    follows="{{Auth::user()->following->contains($user->profile)}}"></follow>
                                         </div>
-                                        <follow user-id="{{$user->id}}" follows="{{Auth::user()->following->contains($user->profile)}}"></follow>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        @endif
-                    @endforeach
+                                    </td>
+                                </tr>
+                            </table>
+                        @endforeach
+                    @else
+                        <h5 class="pt-4">No suggestions</h5>
+                    @endif
                 </div>
             </div>
 
@@ -248,26 +255,26 @@
                                 </div>
                             </div>
                         @else
-                                <div class="card-body p-0 ml-3 mr-3">
-                                    <div class="d-flex justify-content-between align-items-center pt-2">
-                                        <div class="lead" style="font-size: 18px; letter-spacing: 1px;">
-                                            @if(strlen($post->content)>=100)
-                                                {{substr($post->content, 0, 100)}}
-                                                <a class="text-muted text-decoration-none"
-                                                   style="font-size: 14px; letter-spacing: normal;"
-                                                   href="{{route("post.show", [$post->id])}}">
-                                                    ....continue reading
-                                                </a>
-                                            @else
-                                                {{$post->content}}
-                                            @endif
-                                        </div>
+                            <div class="card-body p-0 ml-3 mr-3">
+                                <div class="d-flex justify-content-between align-items-center pt-2">
+                                    <div class="lead" style="font-size: 18px; letter-spacing: 1px;">
+                                        @if(strlen($post->content)>=100)
+                                            {{substr($post->content, 0, 100)}}
+                                            <a class="text-muted text-decoration-none"
+                                               style="font-size: 14px; letter-spacing: normal;"
+                                               href="{{route("post.show", [$post->id])}}">
+                                                ....continue reading
+                                            </a>
+                                        @else
+                                            {{$post->content}}
+                                        @endif
                                     </div>
                                 </div>
+                            </div>
                             <img class="card-img-bottom" src="/storage/{{$post->img}}" alt="Card image cap">
                         @endif
 
-{{--                        like--}}
+                        {{--                        like--}}
 
                         <div class="card-footer pt-2 pb-2 mb-2 border-bottom">
                             <like post-id="{{$post->id}}" likes="{{count($post->likes)}}"
@@ -284,7 +291,8 @@
 
                         <!-- All Modal -->
 
-                        <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1" aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
+                        <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1"
+                             aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header pb-0">
@@ -316,7 +324,8 @@
                                                             </div>
                                                             <div class="ml-3">
                                                                 <div class="p-0 m-0">
-                                                                    <a class="text-decoration-none lead text-dark" style="font-size: 18px;"
+                                                                    <a class="text-decoration-none lead text-dark"
+                                                                       style="font-size: 18px;"
                                                                        href="{{ url('/profile/'.$user->profile->user_id)}}">
                                                                         {{ $user->user_name}}
                                                                     </a>
@@ -325,14 +334,16 @@
                                                                 {{--                                    name--}}
 
                                                                 <div class="p-0 text-muted">
-                                                                    <a class="text-decoration-none text-muted" style="font-size: 14px;"
+                                                                    <a class="text-decoration-none text-muted"
+                                                                       style="font-size: 14px;"
                                                                        href="{{ url('/profile/'.$user->profile->user_id)}}">
                                                                         {{ $user->name}}
                                                                     </a>
                                                                 </div>
                                                             </div>
                                                             @if($user->id !== Auth::user()->id)
-                                                            <follow user-id="{{$user->id}}" follows="{{Auth::user()->following->contains($user->profile)}}"></follow>
+                                                                <follow user-id="{{$user->id}}"
+                                                                        follows="{{Auth::user()->following->contains($user->profile)}}"></follow>
                                                             @endif
                                                         </div>
                                                     </td>

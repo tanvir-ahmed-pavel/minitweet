@@ -27,12 +27,13 @@ class ProfilesController extends Controller
      */
     public function index(User $user)
     {
+//        dd($user);
         $follows = (Auth::user()) ? Auth::user()->following->contains($user->profile) : false;
 
         $posts = $user->messages()->get();
 
         $users=[];
-        foreach (Auth::user()->following as $following){
+        foreach ($user->following as $following){
             $users[]= User::find($following->user_id);
         }
 

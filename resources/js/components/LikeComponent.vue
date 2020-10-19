@@ -13,10 +13,11 @@
 				<div>
 					
 					<!-- Button trigger modal -->
-					<a href="#" type="button" class="text-decoration-none text-dark" data-toggle="modal" :data-target="DataTarget">
+					
+					<a v-if="this.likesCount>0" href="#" type="button" class="text-decoration-none text-dark" data-toggle="modal" :data-target="DataTarget">
 						<b class="pl-3">{{this.likesCount}}</b> Likes
 					</a>
-					
+					<b v-else class="pl-3">No Likes 😥</b>
 					
 				</div>
 			</div>
