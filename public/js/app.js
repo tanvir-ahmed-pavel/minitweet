@@ -2035,13 +2035,14 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.getCmnt();
   },
-  props: ['csrf', 'PostId', 'UserImg', 'UserName', 'UserId', 'url'],
+  props: ['PostId', 'UserImg', 'UserName', 'UserId', 'url'],
   data: function data() {
     return {
       comment: '',
       get_comments: [],
       n_comment: '',
-      count: ''
+      count: '',
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     };
   },
   methods: {
@@ -2059,12 +2060,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (this.url === "http://tweet.r/post/" + this.PostId) {
-        axios.post('/comment/' + this.PostId).then(function (response) {
+        axios.get('/comment/' + this.PostId).then(function (response) {
           _this3.get_comments = response.data.comments;
           _this3.get_comments = _this3.get_comments.reverse();
         });
       } else {
-        axios.post('/post/comment/' + this.PostId).then(function (response) {
+        axios.get('/post/comment/' + this.PostId).then(function (response) {
           _this3.get_comments = response.data.comments;
           _this3.get_comments = _this3.get_comments.reverse();
           _this3.count = response.data.commentsCount;
@@ -2201,14 +2202,14 @@ __webpack_require__.r(__webpack_exports__);
     getlike: function getlike() {
       var _this2 = this;
 
-      axios.post('/like/' + this.PostId).then(function (response) {
+      axios.get('/like/' + this.PostId).then(function (response) {
         _this2.status = response.data;
       });
     },
     countComments: function countComments() {
       var _this3 = this;
 
-      axios.post('/post/comment/' + this.PostId).then(function (response) {
+      axios.get('/post/comment/' + this.PostId).then(function (response) {
         _this3.comment = response.data.commentsCount;
       });
     },
@@ -38626,9 +38627,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n\t\t\t\t\t\t\t" +
+                              "\n\t\t\t\t\t\t\t\t" +
                                 _vm._s(get_comment.user.user_name) +
-                                "\n\t\t\t\t\t\t"
+                                "\n\t\t\t\t\t\t\t"
                             )
                           ]
                         ),
@@ -38665,101 +38666,6 @@ var render = function() {
         )
       ]
     ),
-    _vm._v(" "),
-    _c("div", [
-      _vm.n_comment
-        ? _c(
-            "div",
-            { staticClass: "d-flex align-items-center mt-3 pl-3 pr-3 mb-2" },
-            [
-              _c("div", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-decoration-none",
-                    attrs: { href: "/profile/" + _vm.UserId }
-                  },
-                  [
-                    _c("div", { staticClass: "mr-2" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper"
-                        },
-                        [
-                          _c("img", {
-                            staticClass: "img",
-                            attrs: {
-                              src: "/storage/" + _vm.UserImg,
-                              alt: "img"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", {
-                            staticClass:
-                              "d-flex justify-content-center align-items-center position-absolute img-border"
-                          })
-                        ]
-                      )
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "div",
-                  {
-                    staticClass: " pr-4 pl-3 pb-1",
-                    staticStyle: {
-                      "background-color": "rgba(0,0,0,0.05)",
-                      "border-radius": "15px"
-                    }
-                  },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "text-decoration-none lead",
-                        staticStyle: { "font-size": "18px" },
-                        attrs: { href: "/profile/" + _vm.UserId }
-                      },
-                      [
-                        _vm._v(
-                          "\n\t\t\t\t\t\t" +
-                            _vm._s(_vm.UserName) +
-                            "\n\t\t\t\t\t"
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "p-0 m-0" }, [
-                      _vm._v(_vm._s(_vm.n_comment))
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "ml-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "button btn btn-outline-primary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.delete_cmnt(_vm.get_comment.id)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "far fa-trash-alt" })]
-                )
-              ])
-            ]
-          )
-        : _vm._e()
-    ]),
     _vm._v(" "),
     _c("div", { staticClass: "border-bottom" }, [
       _c(
@@ -38832,7 +38738,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("input", {
-                attrs: { type: "hidden", name: "_token", id: "csrf-token" },
+                attrs: { type: "hidden", name: "_token" },
                 domProps: { value: _vm.csrf }
               })
             ]),

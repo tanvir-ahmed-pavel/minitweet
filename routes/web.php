@@ -16,12 +16,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', "PagesController@home")->name('home');
 Route::get('/about', "PagesController@about");
 Route::resource("post", "PostsController");
+
+//comment
+
 Route::post("/post/{post}/comment", "CommentsController@store")->name('post.comment');
-Route::post("/post/comment/{post}", "CommentsController@index")->name('index.comment');
-Route::post("/comment/{post}", "CommentsController@show")->name('show.comment');
+Route::get("/post/comment/{post}", "CommentsController@index")->name('index.comment');
+Route::get("/comment/{post}", "CommentsController@show")->name('show.comment');
 Route::delete("/post/comment/delete/{comment}", "CommentsController@destroy")->name('delete.comment');
+
+//like
+
 Route::post('/post/like/{user}', 'LikesController@store')->name('store.like');
-Route::post('/like/{post}', 'LikesController@index')->name('get.like');
+Route::get('/like/{post}', 'LikesController@index')->name('get.like');
+
+//notification
+Route::get('/n/readAll', "NotificationsController@readAll")->name('readAll');
+Route::get('/n/readSingle/{id}', "NotificationsController@readSingle")->name('readSingle');
+
 
 Auth::routes();
 

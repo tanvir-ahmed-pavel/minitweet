@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,9 +17,9 @@ class newFollower extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -34,7 +35,9 @@ class newFollower extends Notification
 
     public function toDatabase($notifiable){
         return [
-
+            'id' => $this->user->id,
+            'text' => 'Started following you',
+            'link' => '/profile/'.$this->user->profile->id,
         ];
     }
 

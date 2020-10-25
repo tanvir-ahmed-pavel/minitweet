@@ -58,13 +58,13 @@
         
         methods: {
             getlike(){
-                axios.post('/like/' + this.PostId)
+                axios.get('/like/' + this.PostId)
                     .then(response =>{
                         this.status = response.data;
                     })
             },
             countComments() {
-                axios.post('/post/comment/' + this.PostId)
+                axios.get('/post/comment/' + this.PostId)
 	                    .then(response => {
                             this.comment= response.data.commentsCount;
 	                    })

@@ -47,39 +47,39 @@
 		
 		<!--		//new Comment-->
 		
-		<div>
-			<div class="d-flex align-items-center mt-3 pl-3 pr-3 mb-2" v-if="n_comment">
-				<div>
-					<a class="text-decoration-none"
-					   :href=" '/profile/' + UserId">
-						<div class="mr-2">
-							<div class="overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper">
-								
-								<img :src="'/storage/' + UserImg" alt="img" class="img">
-								<div class="d-flex justify-content-center align-items-center position-absolute img-border">
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div>
-					<div class=" pr-4 pl-3 pb-1" style="background-color: rgba(0,0,0,0.05); border-radius: 15px;">
-						<a :href="'/profile/' + UserId" class="text-decoration-none lead" style="font-size: 18px;">
-							{{UserName}}
-						</a>
-						<div class="p-0 m-0">{{n_comment}}</div>
-					
-					</div>
-				
-				</div>
-				<div class="ml-2">
-					<button class="button btn btn-outline-primary" type="button" @click="delete_cmnt(get_comment.id)">
-						<i class="far fa-trash-alt"></i>
-					</button>
-				</div>
-			</div>
-		
-		</div>
+<!--		<div>-->
+<!--			<div class="d-flex align-items-center mt-3 pl-3 pr-3 mb-2" v-if="n_comment">-->
+<!--				<div>-->
+<!--					<a class="text-decoration-none"-->
+<!--					   :href=" '/profile/' + UserId">-->
+<!--						<div class="mr-2">-->
+<!--							<div class="overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper">-->
+<!--								-->
+<!--								<img :src="'/storage/' + UserImg" alt="img" class="img">-->
+<!--								<div class="d-flex justify-content-center align-items-center position-absolute img-border">-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</a>-->
+<!--				</div>-->
+<!--				<div>-->
+<!--					<div class=" pr-4 pl-3 pb-1" style="background-color: rgba(0,0,0,0.05); border-radius: 15px;">-->
+<!--						<a :href="'/profile/' + UserId" class="text-decoration-none lead" style="font-size: 18px;">-->
+<!--							{{UserName}}-->
+<!--						</a>-->
+<!--						<div class="p-0 m-0">{{n_comment}}</div>-->
+<!--					-->
+<!--					</div>-->
+<!--				-->
+<!--				</div>-->
+<!--				<div class="ml-2">-->
+<!--					<button class="button btn btn-outline-primary" type="button" @click="delete_cmnt(get_comment.id)">-->
+<!--						<i class="far fa-trash-alt"></i>-->
+<!--					</button>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		-->
+<!--		</div>-->
 		
 		<!--		//store Comment-->
 		<div class="border-bottom">
@@ -101,7 +101,7 @@
 					        :disabled="!comment" type="submit">
 						<i class="far fa-paper-plane fa-1x"></i>
 					</button>
-					<input type="hidden" :value="csrf" name="_token" id="csrf-token">
+					<input type="hidden" name="_token" :value="csrf">
 				</div>
 				<span class="invalid-feedback" role="alert">
 					<strong></strong>
@@ -126,7 +126,7 @@
             });
             this.getCmnt();
         },
-        props: ['csrf', 'PostId', 'UserImg', 'UserName', 'UserId', 'url'],
+        props: ['PostId', 'UserImg', 'UserName', 'UserId', 'url'],
 
 
         data() {
@@ -135,6 +135,7 @@
                 get_comments: [],
                 n_comment: '',
 	            count: '',
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 
             }
         },
@@ -148,13 +149,13 @@
             },
             getCmnt() {
                 if (this.url==="http://tweet.r/post/"+this.PostId){
-                    axios.post('/comment/' + this.PostId)
+                    axios.get('/comment/' + this.PostId)
                         .then(response => {
                             this.get_comments = response.data.comments;
                             this.get_comments = this.get_comments.reverse();
                         })
                 } else {
-                    axios.post('/post/comment/' + this.PostId)
+                    axios.get('/post/comment/' + this.PostId)
                         .then(response => {
                             this.get_comments = response.data.comments;
                             this.get_comments = this.get_comments.reverse();

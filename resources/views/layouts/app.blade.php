@@ -25,7 +25,7 @@
     <div id="app">
         @include("layouts.nav")
         <div class="container" style="padding-left: 7%; padding-right: 7%;">
-            @include("inc.errors")
+            @include('inc.errors')
         </div>
         <main class="py-4">
             <div class="container min-vh-100">
@@ -33,12 +33,6 @@
             </div>
 
         </main>
-        <footer class="blog-footer text-center" style="background-color: #d5d5d5; padding: 20px;">
-            <p>Blog template built for ©{{config('app.name', 'Laravel')}} by Pavel Ahmed® 🐸🐸</p>
-            <p>
-                <a href="/posts">Back to Top</a>
-            </p>
-        </footer>
 
     </div>
     <script src="{{asset('js/app.js')}}"></script>

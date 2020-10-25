@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
 use App\Message;
+use App\Notifications\newPost;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,16 +24,30 @@ class PostsController extends Controller
 
     public function index()
     {
+        //        Notification Delete
+
+        $count = Auth::user()->readNotifications->count()-30;
+        if ($count>0){
+        $notifications = Auth::user()->readNotifications->sortBy('created_at')->take($count);
+        foreach ($notifications as $notification){
+            $notification->delete();
+        }
+        }
+
+//        Post
 
        $posts = Message::orderBy("updated_at", "desc")->paginate(6);
 
         $users= User::all();
+
         $suggestions=[];
         foreach ($users as $user){
             if(!Auth::user()->following->contains($user->profile->id) && Auth::user()->id !== $user->profile->user_id){
                 $suggestions[]=$user;
             }
         }
+
+
 
         return view("posts.index", [
             "posts" => $posts,
@@ -83,6 +97,15 @@ class PostsController extends Controller
             Auth::user()->messages()->create([
                 "content" => $data['content'],
             ]);
+        }
+
+//        Notification
+
+        $users = Auth::user()->profile->followers;
+        $post = Message::latest()->first()->id;
+
+        foreach ($users as $user){
+            $user->notify(new newPost(Auth::user(), $post));
         }
 
         return redirect("/post")->with("success", "Post Created!!");

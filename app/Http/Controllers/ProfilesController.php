@@ -27,11 +27,32 @@ class ProfilesController extends Controller
      */
     public function index(User $user)
     {
-//        dd($user);
+
+//        Notification Delete
+        $count = Auth::user()->readNotifications->count()-30;
+        if ($count>0){
+            $notifications = Auth::user()->readNotifications->sortBy('created_at')->take($count);
+            foreach ($notifications as $notification){
+                $notification->delete();
+            }
+        }
+
+//        Suggestions
+
+        $all_users= User::all();
+
+        $suggestions=[];
+        foreach ($all_users as $s_user){
+            if(!Auth::user()->following->contains($s_user->profile->id) && Auth::user()->id !== $s_user->profile->user_id){
+                $suggestions[]=$s_user;
+            }
+        }
+
+//        post
+
+        $posts = $user->messages()->paginate(6);
+
         $follows = (Auth::user()) ? Auth::user()->following->contains($user->profile) : false;
-
-        $posts = $user->messages()->get();
-
         $users=[];
         foreach ($user->following as $following){
             $users[]= User::find($following->user_id);
@@ -44,6 +65,7 @@ class ProfilesController extends Controller
             "users" => $users,
             "posts" => $posts,
             "follows" => $follows,
+            "suggestions" => $suggestions,
         ]);
     }
 

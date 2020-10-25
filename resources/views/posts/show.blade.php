@@ -4,7 +4,7 @@
     <div class="row">
             {{--            post section--}}
 
-            <div class="col-md-8 mx-auto">
+            <div class="col-md-9 mx-auto">
 
                 <div class="card mb-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center">
@@ -107,13 +107,15 @@
                     <Comment csrf="{{csrf_token()}}" user-id="{{Auth::user()->id}}"
                              user-name="{{Auth::user()->user_name}}" post-id="{{$post->id}}"
                              user-img="{{Auth::user()->profile->profile_img ?? "profile_imgs/default-avatar.png"}}" url="{{url()->current()}}"></Comment>
+
+
                     <!-- All Modal -->
 
                     <div class="modal fade" id="likeModal{{$post->id}}" tabindex="-1" aria-labelledby="likeModal{{$post->id}}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header pb-0">
-                                    <h4>People Who Liked your post:</h4>
+                                    <h4>People who liked this post:</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\Notifications\newLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,9 +23,16 @@ class LikesController extends Controller
 
     }
 
-    public function store(Request $request, $id){
+    public function store(Request $request, $post)
+    {
+        $user = Message::find($post)->user;
 
-        return Auth::user()->likes()->toggle($id);
+//        Notification
+
+        if (!Auth::user()->likes->contains($post) && Auth::user()->id !== $user->id){
+            $user->notify(new newLike(Auth::user(), $post));
+        }
+        return Auth::user()->likes()->toggle($post);
 
     }
 
