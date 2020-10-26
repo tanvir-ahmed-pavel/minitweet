@@ -207,8 +207,8 @@
 	}
 	
 	.img-border {
-		height: 35px;
-		width: 35px;
+		height: 36px;
+		width: 36px;
 		border: 2px solid #ffffff;
 		border-radius: 50%;
 	}

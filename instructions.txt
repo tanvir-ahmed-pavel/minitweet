@@ -1,0 +1,12 @@
+# in the root folder- composer install
+# cp .env.example .env
+# create 2 folder/directories named "post_imgs" and "profile_imgs" in storage folder/directory
+# php artisan storage:link
+# php artisan key:generate --ansi
+# php artisan migrate
+# php artisan serve
+
+// optinal if needed
+
+# npm install
+# npm run dev

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Message;
+use Laravolt\Avatar\Facade as Avatar;
 
 class User extends Authenticatable
 {
@@ -24,7 +25,12 @@ class User extends Authenticatable
     {
         parent::boot();
         static::created(function ($user){
-            $user->profile()->create();
+            $fpath = 'storage/profile_imgs/'.$user->id.$user->user_name.'.png';
+            $path = 'profile_imgs/'.$user->id.$user->user_name.'.png';
+            Avatar::create($user->user_name)->save($fpath);
+            $user->profile()->create([
+                "profile_img" => $path,
+            ]);
         });
     }
 
