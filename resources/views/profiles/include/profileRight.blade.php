@@ -40,7 +40,7 @@
     {{--                Scrollable Section--}}
 
     <div class="position-fixed">
-        <h5 class="ml-5">Suggestions</h5>
+        <h5 class="ml-5 ">Suggestions:</h5>
         <div class="overflow-auto scrollbar scrollbar-secondary thin"
              style="max-height: 350px; max-width: 500px; background-color: transparent;">
             @if(count($suggestions)>0)
@@ -90,7 +90,7 @@
                     </table>
                 @endforeach
             @else
-                <h4 class="pt-4">No suggestions</h4>
+                <h5 class="pt-4 border-top">No suggestions for now.</h5>
             @endif
 
         </div>

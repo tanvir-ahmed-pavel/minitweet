@@ -6,8 +6,8 @@
         <div class="row pt-2 pb-5">
 
 {{--            Profile img--}}
-            
-            <div class="col-4">
+
+            <div class="col-md-3">
                 <div class="float-right mr-5 shadow overflow-hidden d-flex justify-content-center align-items-center"
                      style="height: 170px; width: 170px; border: 3px solid #ffffff; border-radius: 50%;">
                     <img src="/storage/{{$user->profile->profile_img ?? "profile_imgs/default-avatar.png"}}" alt="img"
@@ -17,18 +17,21 @@
 
 {{--            Profile Info--}}
 
-            <div class="col-4 pt-0">
+            <div class="col-md-5 pt-0">
                 <div class="ml-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
+                    <div class="d-flex justify-content-between">
 
                         {{--            follow--}}
 
-                        <div class="d-flex align-items-center pb-3">
-                            <div class="h1" style="font-weight: 100;">{{ $user->user_name }}</div>
+                        <div class="d-flex align-items-baseline pb-3">
+                            <div>
+                                <div class="h1" style="font-weight: 100;">{{ $user->user_name }}</div>
+                                <div class="h5 text-muted" style="font-weight: 100;">{{ $user->name }}</div>
+                            </div>
                             @if(Auth::user() && Auth::user()->id == $user->profile->user_id)
                                 <a class="btn btn-sm btn-outline-secondary pl-2 pr-2 ml-4 mb-1 p-0"
                                    href="{{ route("profile.edit", Auth::user()->id)}}">
-                                    <small>Edit Profile</small>
+                                     <small>Edit Profile</small> <i class="fas fa-cogs"></i>
                                 </a>
                             @else
                                 <follow user-id="{{$user->id}}" follows="{{$follows}}"></follow>
@@ -53,7 +56,7 @@
                             <a href="#" type="button" class="text-decoration-none text-dark" data-toggle="modal" data-target="#followerModal{{$user->profile->id}}">
                                 <strong>{{$user->profile->followers->count()}}</strong> followers
                             </a>
-                            {{--                        Follower Model--}}
+                            {{--                        Follower Modal--}}
 
                             <div class="modal fade" id="followerModal{{$user->profile->id}}" tabindex="-1" aria-labelledby="followerModal{{$user->profile->id}}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-scrollable">
@@ -126,7 +129,7 @@
                             <strong>{{$user->following->count()}}</strong> following
                         </a>
 
-                        {{--                        Following Model--}}
+                        {{--                        Following Modal--}}
 
                         <div class="modal fade" id="followModal{{$user->profile->id}}" tabindex="-1" aria-labelledby="followModal{{$user->profile->id}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable">

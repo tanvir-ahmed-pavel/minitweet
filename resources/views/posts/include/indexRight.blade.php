@@ -90,7 +90,7 @@
                     </table>
                 @endforeach
             @else
-                <h4 class="pt-4">No suggestions</h4>
+                <h5 class="pt-4 border-top">No suggestions for now.</h5>
             @endif
 
         </div>
