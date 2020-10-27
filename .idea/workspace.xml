@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="632d9718-2b67-4a2e-999d-21ac61b6b692" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/posts/include/indexRight.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/posts/include/indexRight.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/profiles/include/profileRight.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/profiles/include/profileRight.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/profiles/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/profiles/profile.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/CommentComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/CommentComponent.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -394,7 +393,8 @@
       <workItem from="1603649352799" duration="26000" />
       <workItem from="1603652735391" duration="551000" />
       <workItem from="1603718229810" duration="18161000" />
-      <workItem from="1603780600079" duration="4351000" />
+      <workItem from="1603780600079" duration="4445000" />
+      <workItem from="1603802053446" duration="1199000" />
     </task>
     <task id="LOCAL-00001" summary="aa">
       <created>1598935491840</created>
@@ -459,7 +459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603782295982</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="minor front end bug fix">
+      <created>1603785012983</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1603785012983</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -470,7 +477,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -486,6 +495,7 @@
     <MESSAGE value="19.10.2020" />
     <MESSAGE value="finished" />
     <MESSAGE value="Fixed bug- profile link fix on notification" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug- profile link fix on notification" />
+    <MESSAGE value="minor front end bug fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor front end bug fix" />
   </component>
 </project>

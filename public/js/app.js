@@ -2059,7 +2059,7 @@ __webpack_require__.r(__webpack_exports__);
     getCmnt: function getCmnt() {
       var _this3 = this;
 
-      if (this.url === "http://tweet.r/post/" + this.PostId) {
+      if (this.url.includes('/post/' + this.PostId)) {
         axios.get('/comment/' + this.PostId).then(function (response) {
           _this3.get_comments = response.data.comments;
           _this3.get_comments = _this3.get_comments.reverse();
@@ -38536,8 +38536,7 @@ var render = function() {
         _c(
           "div",
           [
-            Number(_vm.count) > 2 &&
-            _vm.url !== "http://tweet.r/post/" + _vm.PostId
+            Number(_vm.count) > 2 && !_vm.url.includes("/post/" + _vm.PostId)
               ? _c("div", { staticClass: "ml-5" }, [
                   _c(
                     "a",

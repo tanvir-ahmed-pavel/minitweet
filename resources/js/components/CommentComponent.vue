@@ -1,12 +1,12 @@
 <template>
-	
+
 	<div>
-		
+
 		<!--		//Show Comment-->
-		
+
 		<div class="scrollbar-secondary thin overflow-auto" style="width: 100%; margin-left: 0; max-height: 350px;">
 			<div>
-				<div class="ml-5" v-if="Number(count)>2 && url!=='http://tweet.r/post/'+PostId">
+				<div class="ml-5" v-if="Number(count)>2 && !url.includes('/post/'+PostId)">
 					<a class="text-decoration-none text-muted" :href=" '/post/'+ PostId">see all comments....</a>
 				</div>
 				<div class="d-flex align-items-center mt-3 pl-3 pr-3 mb-2" v-for="get_comment in get_comments">
@@ -15,7 +15,7 @@
 						   :href=" '/profile/' + get_comment.user.id">
 							<div class="mr-2">
 								<div class="overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper">
-									
+
 									<img v-if="get_comment.user.profile.profile_img"
 									     :src="'/storage/' + get_comment.user.profile.profile_img" alt="img" class="img">
 									<img v-if="!get_comment.user.profile.profile_img"
@@ -33,20 +33,20 @@
 							</a>
 							<div class="p-0 m-0">{{get_comment.comment}}</div>
 						</div>
-					
+
 					</div>
 					<div v-if="Number(UserId) === get_comment.user_id" class="ml-2">
 						<button class="button btn btn-outline-primary" type="button" @click="delete_cmnt(get_comment.id)">
 							<i class="far fa-trash-alt"></i>
 						</button>
 					</div>
-				
+
 				</div>
 			</div>
 		</div>
-		
+
 		<!--		//new Comment-->
-		
+
 <!--		<div>-->
 <!--			<div class="d-flex align-items-center mt-3 pl-3 pr-3 mb-2" v-if="n_comment">-->
 <!--				<div>-->
@@ -80,14 +80,14 @@
 <!--			</div>-->
 <!--		-->
 <!--		</div>-->
-		
+
 		<!--		//store Comment-->
 		<div class="border-bottom">
 		<form action="" @submit.prevent="submit">
 			<div class="input-group mb-2 p-3 pt-4 ">
 				<div class="mr-2">
 					<div class="float-right overflow-hidden d-flex justify-content-center align-items-center position-relative img-wrapper">
-						
+
 						<img :src="'/storage/' + UserImg" alt="img" class="img">
 						<div class="d-flex justify-content-center align-items-center position-absolute img-border">
 						</div>
@@ -116,7 +116,7 @@
 <script>
 
     export default {
-        
+
         mounted() {
 			Event.$on('cmtCreated', () => {
                 this.getCmnt();
@@ -148,7 +148,7 @@
                     })
             },
             getCmnt() {
-                if (this.url==="http://tweet.r/post/"+this.PostId){
+                if (this.url.includes('/post/'+this.PostId)){
                     axios.get('/comment/' + this.PostId)
                         .then(response => {
                             this.get_comments = response.data.comments;
@@ -178,26 +178,26 @@
 		border-radius: 10px !important;
 		background-color: rgba(0, 0, 0, 0.09);
 	}
-	
+
 	.button:hover {
 		background-color: rgb(34, 156, 241)
 	}
-	
+
 	.button:disabled {
 		background-color: rgba(0, 0, 0, 0.09);
 	}
-	
+
 	.input {
 		height: 40px;
 		background-color: rgba(0, 0, 0, 0.07) !important;
 		border-radius: 20px !important;
 	}
-	
+
 	.img {
 		height: 100% !important;
 		width: auto !important;
 	}
-	
+
 	.img-wrapper {
 		height: 38px;
 		width: 38px;
@@ -205,7 +205,7 @@
 		border-radius: 50%;
 		background-color: rgba(255, 255, 0, 0)
 	}
-	
+
 	.img-border {
 		height: 36px;
 		width: 36px;
