@@ -37,7 +37,7 @@ class newFollower extends Notification
         return [
             'id' => $this->user->id,
             'text' => 'Started following you',
-            'link' => '/profile/'.$this->user->profile->id,
+            'link' => '/profile/'.$this->user->id,
         ];
     }
 

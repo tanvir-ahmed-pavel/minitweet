@@ -1,6 +1,6 @@
 # in the root folder- composer install
 # cp .env.example .env
-# create 2 folder/directories named "post_imgs" and "profile_imgs" in storage folder/directory
+# create 2 folder/directories named "post_imgs" and "profile_imgs" in storage/app/public folder/directory
 # php artisan storage:link
 # php artisan key:generate --ansi
 # php artisan migrate
